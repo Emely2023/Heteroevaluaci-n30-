@@ -2,7 +2,7 @@
   Campos:
   nombre
   correo
-  contrasenia 
+  password 
   telefono
   direccion
   puesto
@@ -18,11 +18,11 @@
        type: String,
        require: true
      },
-   correo: {
+   email: {
        type: String,
        require: true
    },
-   contrasenia:{
+   password:{
        type: String,
        require: true
    },
@@ -46,7 +46,7 @@
        type: Number,
        require: true
    },
-   dui:{
+   DUI:{
     type: String,
     require: true
    }

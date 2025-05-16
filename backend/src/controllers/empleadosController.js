@@ -11,8 +11,8 @@ res.json(empleados)
 }
 //INSERT
 empleadosController.createEmpleados = async (req, res) => {
-    const{nombre, correo, contrasenia ,telefono, direccion, puesto,fecha_contratacion, salario, DUI } = req.body;
-    const newEmpleado = new EmpleadosModel ({nombre, correo, contrasenia ,telefono, direccion, puesto,fecha_contratacion, salario, DUI });
+    const{nombre, email, password ,telefono, direccion, puesto,fecha_contratacion, salario, DUI } = req.body;
+    const newEmpleado = new EmpleadosModel ({nombre, email, password ,telefono, direccion, puesto,fecha_contratacion, salario, DUI });
     await newEmpleado.save()
     res.json({ message : "Empleado guardado"});
 }
@@ -25,12 +25,12 @@ empleadosController.deleteEmpleados = async (req, res) => {
 //UPDATE
 empleadosController.updateEmpleados = async (req, res) => {
    //  Solicito todos los valores
-    const {nombre, correo, contrasenia ,telefono, direccion, puesto,fecha_contratacion, salario, DUI} = req.body;
+    const {nombre, email, password ,telefono, direccion, puesto,fecha_contratacion, salario, DUI} = req.body;
 
     await EmpleadosModel.findByIdAndUpdate(req.params.id,{
         nombre,
-        correo,
-        contrasenia ,
+        email,
+        password ,
         telefono,
         direccion,
         puesto,

@@ -1,8 +1,8 @@
 /*
 Campos
   nombre
-  correo
-  contrasenia
+  email
+  password
   telefono
   direccion
   DUI
@@ -16,11 +16,11 @@ Campos
           type: String,
           require: true
         },
-    correo: {
+    email: {
           type: String,
           require: true
       },
-    contrasenia:{
+    password:{
           type: String,
           require: true
       },
@@ -32,7 +32,7 @@ Campos
           type:String,
           require: true,
       },
-    dui:{
+    DUI:{
        type: String,
        require: true,
       }

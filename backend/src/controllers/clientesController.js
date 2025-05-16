@@ -12,8 +12,8 @@ res.json(clientes)
 
 // INSERT
 clientesController.createClientes = async (req, res) => {
-    const{ nombre,correo,contrasenia,telefono,direccion,dui } = req.body;
-    const newCliente = new ClientesModel ({nombre,correo,contrasenia,telefono,direccion,dui });
+    const{ nombre,email,password,telefono,direccion,DUI } = req.body;
+    const newCliente = new ClientesModel ({nombre,email,password,telefono,direccion,DUI });
     await newCliente.save()
     res.json({ message : "Cliente Guardado"});
 }
@@ -26,15 +26,15 @@ clientesController.createClientes = async (req, res) => {
 //UPDATE
 clientesController.updateClientes = async (req, res) => {
    //  Solicito todos los valores
-    const {nombre,correo,contrasenia,telefono,direccion,dui} = req.body;
+    const {nombre,email,password,telefono,direccion,DUI} = req.body;
 
     await ClientesModel.findByIdAndUpdate(req.params.id,{
        nombre,
-       correo,
-       contrasenia,
+       email,
+       password,
        telefono,
        direccion,
-       dui
+       DUI
 
     },{new: true}
 );
