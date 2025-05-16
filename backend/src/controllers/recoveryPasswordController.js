@@ -17,11 +17,11 @@ recoveryPasswordController.requestCode = async()=> {
         let userFound;
         let userType;
 
-        userFound = await clientsModel.findOne({email});
+        userFound = await ClientesModel.findOne({email});
         if(userFound){
             userType = "cliente";
         }else{
-            userFound = await employeesModel.findOne({email});
+            userFound = await EmpleadosModel.findOne({email});
             if (userFound){
                 userType = "empleado";
             }
@@ -48,7 +48,7 @@ recoveryPasswordController.requestCode = async()=> {
             email,
             "Your verification code",
             "Hello! Remember don't forget your pass",
-            HTMLRecoverEmail(code)
+            HTMLRecoveryEmail(code)
         );
         
     } catch (error) {
