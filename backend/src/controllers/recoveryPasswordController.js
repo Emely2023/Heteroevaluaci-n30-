@@ -10,7 +10,7 @@ import	{config} from "../config.js";
 //Crear una arrya de funciones
 const recoveryPasswordController = {};
 
-recoveryPasswordController.requestCode = async()=> {
+recoveryPasswordController.requestCode = async(req, res)=> {
     const {email} = req.body;
 
     try {
@@ -39,10 +39,10 @@ recoveryPasswordController.requestCode = async()=> {
  
             config.JWT.secret,
  
-            {expiresIn: "20"}
+            {expiresIn: "20m"}
         )
  
-        res.cookie("tokenRecoverCode", token, {maxAge: 20*60*1000})
+        res.cookie("tokenRecoveryCode", token, {maxAge: 20*60*1000})
  
         await sendEmail(
             email,
@@ -50,6 +50,9 @@ recoveryPasswordController.requestCode = async()=> {
             "Hello! Remember don't forget your pass",
             HTMLRecoveryEmail(code)
         );
+
+        res.json({message : "Codigo de recuperación enviado"})
+
         
     } catch (error) {
         console.log("error" + error);
