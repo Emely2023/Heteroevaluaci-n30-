@@ -39,6 +39,6 @@ clientesController.updateClientes = async (req, res) => {
     },{new: true}
 );
 // muestro un mensaje que todo se actualizó
-res.json({ message: "Client actualizado"});
+res.json({ message: "Cliente actualizado"});
 };
 export default clientesController;
