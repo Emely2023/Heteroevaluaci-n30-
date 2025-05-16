@@ -21,7 +21,8 @@ peliculasController.getAllPeliculas = async(req, res) => {
 
 //INSERT 
 peliculasController.insertPeliculas = async (req, res) => {
-    const{ titulo,  descripcion, director,genero ,anio, duracion } = req.body;
+    try {
+        const{ titulo,  descripcion, director,genero ,anio, duracion } = req.body;
     let imageURL = ""
   
     //Subir la imagen a cloudinary
@@ -40,6 +41,11 @@ const newPelicula = new PeliculasModel({ titulo,  descripcion, director,genero ,
 newPelicula.save()
 
 res.json({ message: "Pelicula send" });
+    } catch (error) {
+        console.log(error);
+        
+    }
+    
 };
 
 export default peliculasController;

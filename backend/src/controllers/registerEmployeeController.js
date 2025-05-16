@@ -34,7 +34,7 @@ registerEmployeeController.register = async(req,res) =>{
         const passwordHash = await bcrypyjs.hash(password, 10)
 
         //save the employee
-        const newEmployee = new EmpleadosModel({nombre, email, password ,telefono, direccion, puesto,fecha_contratacion, salario, DUI})
+        const newEmployee = new EmpleadosModel({nombre, email, password: passwordHash,telefono, direccion, puesto,fecha_contratacion, salario, DUI})
 
         await newEmployee.save();
 

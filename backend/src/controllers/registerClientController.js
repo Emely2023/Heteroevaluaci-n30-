@@ -37,7 +37,7 @@ registerClientController.registerClient = async (req, res) => {
     const newClient = new ClientesModel({
         nombre,
         email,
-        password,
+        password: passwordHash,
         telefono,
         direccion,
         DUI
