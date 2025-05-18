@@ -12,4 +12,10 @@ router.route("/")
 .get(peliculasController.getAllPeliculas)
 .post(upload.single("image"),peliculasController.insertPeliculas);
 
+router
+.route("/:id")
+.put(upload.single("image"), peliculasController.updatePelicula)
+.delete(peliculasController.deletePelicula);
+
+
 export default router;
