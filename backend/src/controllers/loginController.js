@@ -1,80 +1,75 @@
-import ClientesModel from "../models/Clientes.js"
-import EmpleadosModel from "../models/Empleados.js"
-import bcrypt from "bcryptjs" // Encriptar
-import jsonwebtoken from "jsonwebtoken";
+//Importamos los modelos
+import ClientesModel from "../models/Clientes.js";
+import EmpleadosModel from "../models/Empleados.js";
+import bcryptjs from "bcryptjs"; // Encriptar
+import jsonwebtoken from "jsonwebtoken"; // generar token
 import { config } from "../config.js";
 
-//Array de funciones
-
+// Array de funciones
 const loginController = {};
 
-loginController.login = async(req,res)=> {
-    //Pedimos las datos
-    const { email, password} = req.body;
+loginController.login = async (req, res) => {
+  //Pedimos las cosas
+  const { email, password } = req.body;
 
-    try {
+  try {
+    //Validamos los 3 posibles niveles
+    // 1. Admin, 2. Empleado, 3. Cliente
 
-        //validamos los 3 posibles niveles
-        //1. Admin, 2. Empleado, 3. Cliente
+    let userFound; //Guarda el usuario encontrado
+    let userType; //Guarda el tipo de usuario encontrado
 
-        let userFound;// Guarda el usuario encontrado 
-        let userType; // Guarda el tipo de usuario
-
-
-
-        //1. Admin
-
-        if(email === config.ADMIN.emailAdmin && password === config.ADMIN.password){
-            userType= "admin";
-            userFound= {_id: "admin"};
-        }else{
-            //2.Empleados
-            userFound = await EmpleadosModel.findOne({email});
-            userType = "empleado"
-            if(!userFound){
-                //3. Cliente
-                userFound = await ClientesModel.findOne({email});
-                userType = "cliente"
-                
-            }
-        }
+    //1. Admin
+    if (
+      email === config.ADMIN.emailAdmin &&
+      password === config.ADMIN.password
+    ) {
+      userType = "admin";
+      userFound = { _id: "admin" };
+    } else {
+      //2. Empleados
+      userFound = await EmpleadosModel.findOne({ email });
+      userType = "empleado";
+      if (!userFound) {
+        //3. Cliente
+        userFound = await ClientesModel.findOne({ email });
+        userType = "cliente";
+      }
+    }
 
     //Si no encontramos a ningun usuario con esas credenciales
-    if(!userFound){
-        return res.json({ message: "User not found"});
+    if (!userFound) {
+      return res.json({ message: "User not found" });
     }
 
-    //Validar la contraseña
-    //SOLO SI NO ES ADMIN
-    if(userType !== "admin"){
-        const isMatch = await bcrypt.compare(password, userFound.password)
-        if(!isMatch){
-            return res.json({message: "Invalid password"})
-        }
+    // Validar la contraseña
+    // SOLO SI NO ES ADMIN
+    if (userType !== "admin") {
+      const isMatch = await bcryptjs.compare(password, userFound.password);
+      if (!isMatch) {
+        return res.json({ message: "Invalid password" });
+      }
     }
 
-    //TOKEN 
-
-    //PARA VALIDAR QUE SE LOGEO
+    //// TOKEN
+    //Para validar que inició sesión
     jsonwebtoken.sign(
-        //1-Que voy a guardar
-        {id: userFound._id, userType},
-        //Secreto
-        config.JWT.secret,
-        //cuando expira
-        {expiresIn: config.JWT.expiresIn},
-        //4. Funcion Flecha
-        (error, token)=>{
-            if(error) console.log("error"+ error)
-                res.cookie("authToken", token)
-            res.json({message: "Login successfull"})
-        }
-    )
-        
-           
-    }catch (error){
-        console.log("error"+ error);
-    }
+      //1-Que voy a guardar
+      { id: userFound._id, userType },
+      //2-Secreto
+      config.JWT.secret,
+      //3-Cuando expira
+      { expiresIn: config.JWT.expiresIn },
+      //4. Funcion flecha
+      (error, token) => {
+        if (error) console.log("error" + error);
+        res.cookie("authToken", token);
+        res.json({ message: "Login successful" });
+      }
+    );
+  } catch (error) {
+    console.log("error" + error);
+  }
 };
 
 export default loginController;
