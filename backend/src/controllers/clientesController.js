@@ -18,10 +18,19 @@ clientesController.createClientes = async (req, res) => {
     res.json({ message : "Cliente Guardado"});
 }
     //DELETE
-    clientesController.deleteClientes = async (req, res) => {
-    await clientesController.findOneAndDelete(req.params.id)
-    res.json({message:"Cliente eliminado"})
+clientesController.deleteClientes = async (req, res) => {
+  try {
+    const deleted = await ClientesModel.findByIdAndDelete(req.params.id); 
+    if (!deleted) {
+      return res.status(404).json({ message: "Cliente no encontrado" });
+    }
+    res.json({ message: "Cliente eliminado correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al eliminar cliente" });
+  }
 }
+
 
 //UPDATE
 clientesController.updateClientes = async (req, res) => {

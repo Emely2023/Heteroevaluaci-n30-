@@ -102,7 +102,7 @@ recoveryPasswordController.verifyCode = async (req, res) => {
   
     try{
       //Extraer el token de las cookies
-      const token = req.body.cookies.tokenRecoveryCode;
+      const token = req.cookies.tokenRecoveryCode;
   
       //Extraer la informacion del token
       const decoded = jsonwebtoken.verify(token, config.JWT.secret)
@@ -117,18 +117,18 @@ recoveryPasswordController.verifyCode = async (req, res) => {
   
   
     //encriptar la contraseña
-    const hashedPassword = await bcryptjs.hash(newPassword, 10)
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
   
     //Actualizar la contraseña del usuario en la base de datos
     let updateUser;
   
-    if(userType === "client"){
+    if(userType === "cliente"){
       updateUser = await ClientesModel.findOneAndUpdate(
         {email},
         {password: hashedPassword},
         {new: true}
       );
-    } else if (userType === "employee"){
+    } else if (userType === "empleado"){
       updateUser = await EmpleadosModel.findOneAndUpdate(
         {email},
         {password: hashedPassword},
